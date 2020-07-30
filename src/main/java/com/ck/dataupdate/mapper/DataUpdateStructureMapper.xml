@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ck.dataupdate.mapper.DataUpdateStructureMapper">
+
+
+  <select id="isDataBase" resultType="java.lang.String">
+    EXISTS ${dataBaseName}.${tableName}
+  </select>
+
+  <update id="dropDataBase">
+    drop database ${dataBaseName}
+  </update>
+
+  <update id="createDataBase">
+    create database ${dataBaseName}
+  </update>
+
+  <select id="getTableNames" resultType="java.lang.String">
+    show tables
+  </select>
+  <select id="getNotLikeTableNames" resultType="java.lang.String">
+    SELECT name FROM system.tables WHERE database = #{dataBaseName}
+    and name not like concat('%',#{suffixName},'%')
+  </select>
+
+  <select id="getTableStructure" resultType="java.lang.String">
+    show create table ${dataBaseName}.${tableName}
+  </select>
+
+
+  <update id="createTableStructure">
+    ${sql}
+  </update>
+
+
+  <insert id="insertData">
+    ${sql}
+  </insert>
+
+  <select id="getMaxNum" resultType="java.lang.String">
+    ${sql}
+  </select>
+
+  <insert id="updateRemoteData">
+    ${sql}
+  </insert>
+
+  <update id="truncateTable">
+    truncate table ${dataBaseName}.${tableName}
+  </update>
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.5.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.ck</groupId>
+  <artifactId>ckdataupdate</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ckdataupdate</name>
+  <description>project for Spring Boot</description>
+
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <!--        <exclusion>-->
+        <!--          <groupId>org.springframework.boot</groupId>-->
+        <!--          <artifactId>spring-boot-starter-logging</artifactId>-->
+        <!--        </exclusion>-->
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web-services</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>2.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-models</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>ru.yandex.clickhouse</groupId>
+      <artifactId>clickhouse-jdbc</artifactId>
+      <version>0.1.54</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+<!--    <dependency>-->
+<!--      <groupId>io.springfox</groupId>-->
+<!--      <artifactId>springfox-swagger2</artifactId>-->
+<!--      <version>2.9.2</version>-->
+<!--      <exclusions>-->
+<!--        <exclusion>-->
+<!--          <artifactId>guava</artifactId>-->
+<!--          <groupId>com.google.guava</groupId>-->
+<!--        </exclusion>-->
+<!--      </exclusions>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.10</version>
+    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>com.alibaba</groupId>-->
+    <!--      <artifactId>druid-spring-boot-starter</artifactId>-->
+    <!--      <version>1.1.16</version>-->
+    <!--      <exclusions>-->
+    <!--        <exclusion>-->
+    <!--          <artifactId>druid</artifactId>-->
+    <!--          <groupId>com.alibaba</groupId>-->
+    <!--        </exclusion>-->
+    <!--      </exclusions>-->
+    <!--    </dependency>-->
+    <!-- alibaba的druid数据库连接池 -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-undertow</artifactId>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>12.0</version>
+    </dependency>
+
+    <!--    为了根据ip编写数据源导入包-->
+    <!-- https://mvnrepository.com/artifact/com.liferay/org.apache.commons.configuration -->
+    <dependency>
+      <groupId>com.liferay</groupId>
+      <artifactId>org.apache.commons.configuration</artifactId>
+      <version>1.10.LIFERAY-PATCHED-2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-jdbc</artifactId>
+      <version>9.0.35</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.lang -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>org.apache.commons.lang</artifactId>
+      <version>2.6</version>
+    </dependency>
+
+
+    <!--新加-->
+
+
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.1-jre</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+
+</project>
