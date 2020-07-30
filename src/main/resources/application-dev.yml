@@ -16,24 +16,9 @@ spring:
       charset: utf-8
       enabled: true
   datasource:
-    #   数据源基本配置
-    #      type: com.alibaba.druid.pool.DruidDataSource
-    #      driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-    #      jdbc-url: jdbc:clickhouse://129.211.32.140:10912/default
-    #      username: default
-    #      password: Bmsoft2020datateam
-    #      #最大建立连接等待时间。如果超过此时间将接到异常，单位毫秒
-    #      maxWait: 8000
-    #      initialSize: 10
-    #      minIdle: 50
-    #      maxIdle: 250
-    #      maxActive: 300
-    #      removeAbandoned: true
-    #      #从getconn到sql执行完，超过10秒会被释放
-    #      removeAbandonedTimeout: 10
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-    jdbc-url: jdbc:clickhouse://39.106.197.109:8123/test
+    jdbc-url: jdbc:clickhouse://
     username: default
     password: qwerty
     #最大建立连接等待时间。如果超过此时间将接到异常，单位毫秒
