@@ -68,4 +68,10 @@ public interface DataUpdateStructureMapper {
 
   List<String> getNotLikeTableNames(@Param("suffixName") String suffixName,
       @Param("dataBaseName") String dataBaseName);
+
+  List<String> getLikeTableNames(@Param("suffixName") String suffixName,
+      @Param("dataBaseName") String dataBaseName);
+
+  List<String> getSomeFitTableNames(@Param("dataBaseName") String dataBaseName,
+      @Param("tableNames") String tableNames);
 }

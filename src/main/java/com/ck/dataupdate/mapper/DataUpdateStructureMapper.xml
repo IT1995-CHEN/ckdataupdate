@@ -24,6 +24,16 @@
     and name not like concat('%',#{suffixName},'%')
   </select>
 
+  <select id="getLikeTableNames" resultType="java.lang.String">
+    SELECT name FROM system.tables WHERE database = #{dataBaseName}
+    and name  like concat('%',#{suffixName},'%')
+  </select>
+
+  <select id="getSomeFitTableNames" resultType="java.lang.String">
+    SELECT name FROM system.tables WHERE database = #{dataBaseName}
+    and name  in (${tableNames})
+  </select>
+
   <select id="getTableStructure" resultType="java.lang.String">
     show create table ${dataBaseName}.${tableName}
   </select>

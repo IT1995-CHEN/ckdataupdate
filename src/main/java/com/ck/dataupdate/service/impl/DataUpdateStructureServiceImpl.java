@@ -3,7 +3,9 @@ package com.ck.dataupdate.service.impl;
 
 import com.ck.dataupdate.mapper.DataUpdateStructureMapper;
 import com.ck.dataupdate.service.DataUpdateStructureService;
+import com.ck.dataupdate.utils.CommonUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +76,13 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
 
     if ("0".equals(isCluster)) {
       tableNameList = dataUpdateStructureMapper.getTableNames();
-      logInfo = "非集群表数据同步成功";
-    } else {
+      logInfo = "同步库中所有表数据成功";
+    } else if ("1".equals(isCluster)) {
       tableNameList = dataUpdateStructureMapper.getNotLikeTableNames(suffixName, oldDatabaseName);
-      logInfo = "单个节点集群总表数据同步成功";
+      logInfo = "同步库中不为集群后缀的表数据成功";
+    } else {
+      tableNameList = dataUpdateStructureMapper.getLikeTableNames(suffixName, oldDatabaseName);
+      logInfo = "同步库中拥有集群表后缀的表数据成功";
     }
 
     if (tableNameList.size() == 0) {
@@ -91,12 +96,14 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     for (int i = 0; i < tableNameList.size(); i++) {
 
       if (i == tableNameList.size() - 1) {
-        tableSql += "select count(*) as num from " + tableNameList.get(i) + ")";
+        tableSql +=
+            "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i) + ")";
         sql += tableSql;
 
         break;
       }
-      tableSql += "select count(*) as num from " + tableNameList.get(i) + " UNION ALL ";
+      tableSql += "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i)
+          + " UNION ALL ";
     }
     String maxNum = dataUpdateStructureMapper.getMaxNum(sql);
     int i = 0;
@@ -107,14 +114,83 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
 
       i++;
       try {
+        if ("2".equals(isCluster)) {
+          dataUpdateStructureMapper.updateRemoteData(remoteSql);
+          log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步成功");
+          continue;
+        }
         dataUpdateStructureMapper.truncateTable(newDatabaseName, tableName);
         dataUpdateStructureMapper.updateRemoteData(remoteSql);
-        log.info("第" + i + "张表数据同步成功");
+        log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步成功");
       } catch (Exception e) {
-        log.info("第" + i + "张表数据同步失败");
+        log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步失败,需要查询该表count值验证");
       }
     }
     return logInfo;
 
   }
+
+  public String getTableMaxNum(String database, List<String> tableNameList) {
+    String sql = "select max(num) from (";
+
+    String tableSql = new String();
+
+    if (tableNameList.size() == 0) {
+      return "0";
+    }
+    for (int i = 0; i < tableNameList.size(); i++) {
+      if (tableNameList.size() == 1) {
+        tableSql = "select count(*) as num from " + database + "." + tableNameList.get(0) + ")";
+        sql += tableSql;
+        break;
+      }
+      if (i == tableNameList.size() - 1) {
+        tableSql +=
+            "select count(*) as num from " + database + "." + tableNameList.get(i) + ")";
+        sql += tableSql;
+        break;
+      }
+      tableSql += "select count(*) as num from " + database + "." + tableNameList.get(i)
+          + " UNION ALL ";
+    }
+    String maxNum = dataUpdateStructureMapper.getMaxNum(sql);
+    return maxNum;
+  }
+
+  @Override
+  public String updateTableData(String oldDatabaseName, String newDatabaseName, String tableNames,
+      String isTruncate) {
+    List<String> fitTableNameList = dataUpdateStructureMapper
+        .getSomeFitTableNames(oldDatabaseName, CommonUtils.handleTableNameSql(tableNames));
+    String maxNum = getTableMaxNum(oldDatabaseName, fitTableNameList);
+    int i = 0;
+    for (String tableName : fitTableNameList) {
+      String remoteSql = "insert into ";
+      remoteSql += newDatabaseName + "." + tableName + " select * from " + oldDatabaseName + "."
+          + tableName + " limit " + maxNum;
+      i++;
+      try {
+        //truncate table命令只能对子表有效。所以如果输入的tableNames中包含总表名称。数据不会被清空
+        if ("1".equals("isTruncate")) {
+          dataUpdateStructureMapper.truncateTable(newDatabaseName, tableName);
+        }
+        dataUpdateStructureMapper.updateRemoteData(remoteSql);
+        log.info("第" + i + "张表" + tableName + "数据同步成功");
+      } catch (Exception e) {
+        log.info("第" + i + "张表" + tableName + "数据同步失败,需要查询该表count值验证");
+      }
+    }
+    if (tableNames.contains(",")) {
+      String[] paramTableNames = tableNames.split(",");
+      List<String> paramTableNamesList = Arrays.asList(paramTableNames);
+      for (int m = 0; m < paramTableNamesList.size(); m++) {
+        if (!fitTableNameList.contains(paramTableNamesList.get(m))) {
+          log.info(paramTableNamesList.get(m) + "在" + newDatabaseName + "数据库中不存在");
+        }
+      }
+    }
+
+    return "同步在新库中存在的表数据结束";
+  }
+
 }

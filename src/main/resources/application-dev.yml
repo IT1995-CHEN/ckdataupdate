@@ -18,7 +18,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-    jdbc-url: jdbc:clickhouse://
+    jdbc-url: jdbc:clickhouse://39.106.197.109:8123/test11
     username: default
     password: qwerty
     #最大建立连接等待时间。如果超过此时间将接到异常，单位毫秒
@@ -42,10 +42,9 @@ mybatis:
   configuration:
     call-setters-on-nulls: true
   # mybatis自带日志打印 本地调试可以放开
-
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
-  level:
-    com.ck.dataupdate: debug
+  config: classpath:log4j2-dev.xml
+
+

@@ -17,4 +17,12 @@ public interface DataUpdateStructureService {
    */
   String updateData(String oldDatabaseName, String newDatabaseName, String isCluster,
       String suffixName);
+
+  /**
+   * @param oldDatabaseName
+   * @param newDatabaseName
+   * @return
+   */
+  String updateTableData(String oldDatabaseName, String newDatabaseName, String tableNames,
+      String isTruncate);
 }

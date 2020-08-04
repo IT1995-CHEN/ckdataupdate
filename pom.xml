@@ -24,10 +24,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <exclusions>
-        <!--        <exclusion>-->
-        <!--          <groupId>org.springframework.boot</groupId>-->
-        <!--          <artifactId>spring-boot-starter-logging</artifactId>-->
-        <!--        </exclusion>-->
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -144,12 +144,6 @@
       <version>1.10.LIFERAY-PATCHED-2</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-jdbc</artifactId>
-      <version>9.0.35</version>
-    </dependency>
 
 
     <!-- https://mvnrepository.com/artifact/org.apache.directory.studio/org.apache.commons.lang -->
@@ -161,8 +155,6 @@
 
 
     <!--新加-->
-
-
     <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -170,6 +162,17 @@
       <version>27.1-jre</version>
     </dependency>
 
+<!--    <dependency>-->
+<!--      <groupId>org.slf4j</groupId>-->
+<!--      <artifactId>slf4j-simple</artifactId>-->
+<!--      <version>1.7.25</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+    <!-- log4j2 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

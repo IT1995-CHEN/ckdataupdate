@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CommonUtils {
 
-//  public static String jdbcUrlAndBaseDataSource(String ip, String port, String userName, String passWord,
+  //  public static String jdbcUrlAndBaseDataSource(String ip, String port, String userName, String passWord,
 //      String dataBaseName) {
 //    String url = "jdbc:clickhouse://" + ip + ":" + port + "/" + dataBaseName;
 //    System.out.println(url);
@@ -19,5 +19,12 @@ public class CommonUtils {
 //    dataSourceAutoConfiguration.setPassWord(passWord);
 //    return url;
 //  }
+
+  //表名称拼接处理
+  public static String handleTableNameSql(String tableName) {
+    String[] split = tableName.split(",");
+    String collect = Stream.of(split).collect(Collectors.joining("','", "'", "'"));
+    return collect;
+  }
 
 }
