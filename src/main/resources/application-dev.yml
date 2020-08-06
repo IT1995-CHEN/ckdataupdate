@@ -18,7 +18,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-    jdbc-url: jdbc:clickhouse://39.106.197.109:8123/test11
+    jdbc-url: jdbc:clickhouse://
     username: default
     password: qwerty
     #最大建立连接等待时间。如果超过此时间将接到异常，单位毫秒
