@@ -89,7 +89,8 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
       return "源数据库无表，数据同步成功";
     }
     if (tableNameList.size() == 1) {
-      tableSql = "select count(*) as num from " + tableNameList.get(0) + ")";
+      tableSql =
+          "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(0) + ")";
 
     }
 

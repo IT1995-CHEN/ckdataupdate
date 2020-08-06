@@ -1,0 +1,50 @@
+server:
+  port: 8888
+  max-http-header-size: 102400000
+  undertow:
+    max-http-post-size: 102400000
+    url-charset: utf-8
+
+spring:
+  thymeleaf:
+    cache: false
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: ru.yandex.clickhouse.ClickHouseDriver
+    jdbc-url: jdbc:clickhouse://138.20.25.26:8123/TLD1
+    username: default
+    password: CkhPbm#aw2019$10
+    #最大建立连接等待时间。如果超过此时间将接到异常，单位毫秒
+#    maxWait: 8000
+    initialSize: 10
+    minIdle: 50
+    maxIdle: 250
+    maxActive: 300
+    removeAbandoned: true
+    #从getconn到sql执行完，超过10秒会被释放
+#    removeAbandonedTimeout: 10
+
+
+#  mvc:
+#    view:
+#      prefix:  /
+#      suffix: .html
+
+mybatis:
+  mapper-locations: classpath*:com/ck/dataupdate/mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+  # mybatis自带日志打印 本地调试可以放开
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  config: classpath:log4j2-dev.xml
+
+
