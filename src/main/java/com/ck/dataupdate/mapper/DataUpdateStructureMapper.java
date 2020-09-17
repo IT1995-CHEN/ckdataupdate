@@ -31,7 +31,7 @@ public interface DataUpdateStructureMapper {
   boolean createDataBase(@Param("dataBaseName") String dataBaseName);
 
 
-  List<String> getTableNames();
+  List<String> getTableNames(@Param("dataBaseName") String dataBaseName);
 
 
   String getTableStructure(@Param("dataBaseName") String dataBaseName,

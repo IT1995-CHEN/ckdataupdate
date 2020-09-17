@@ -51,7 +51,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     } finally {
       dataUpdateStructureMapper.createDataBase(newDatabaseName);
     }
-    List<String> tableNameList = dataUpdateStructureMapper.getTableNames();
+    List<String> tableNameList = dataUpdateStructureMapper.getTableNames(oldDatabaseName);
     if (tableNameList.size() == 0) {
       return "源头库无表，同步数据库成功";
     }
@@ -75,7 +75,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     System.out.println("0".equals(isCluster));
 
     if ("0".equals(isCluster)) {
-      tableNameList = dataUpdateStructureMapper.getTableNames();
+      tableNameList = dataUpdateStructureMapper.getTableNames(oldDatabaseName);
       logInfo = "同步库中所有表数据成功";
     } else if ("1".equals(isCluster)) {
       tableNameList = dataUpdateStructureMapper.getNotLikeTableNames(suffixName, oldDatabaseName);
@@ -88,31 +88,37 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     if (tableNameList.size() == 0) {
       return "源数据库无表，数据同步成功";
     }
+    System.out.println(tableNameList.size());
     if (tableNameList.size() == 1) {
-      tableSql =
-          "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(0) + ")";
+      sql =
+          "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(0) ;
 
-    }
+    }else {
+      for (int i = 0; i < tableNameList.size(); i++) {
 
-    for (int i = 0; i < tableNameList.size(); i++) {
+        if (i == tableNameList.size() - 1) {
+          tableSql +=
+              "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i) + ")";
+          sql += tableSql;
 
-      if (i == tableNameList.size() - 1) {
-        tableSql +=
-            "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i) + ")";
-        sql += tableSql;
-
-        break;
+          break;
+        }
+        tableSql += "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i)
+            + " UNION ALL ";
       }
-      tableSql += "select count(*) as num from " + oldDatabaseName + "." + tableNameList.get(i)
-          + " UNION ALL ";
     }
+
+
+
+    System.out.println(sql);
     String maxNum = dataUpdateStructureMapper.getMaxNum(sql);
+    System.out.println(maxNum);
     int i = 0;
     for (String tableName : tableNameList) {
       String remoteSql = "insert into ";
       remoteSql += newDatabaseName + "." + tableName + " select * from " + oldDatabaseName + "."
           + tableName + " limit " + maxNum;
-
+      System.out.println(remoteSql);
       i++;
       try {
         if ("2".equals(isCluster)) {
@@ -124,7 +130,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
         dataUpdateStructureMapper.updateRemoteData(remoteSql);
         log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步成功");
       } catch (Exception e) {
-        log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步失败,需要查询该表count值验证");
+        log.info("第" + i + "张表" + tableName + "在" + newDatabaseName + "数据同步出错,需要查询该表count值验证");
       }
     }
     return logInfo;
@@ -178,7 +184,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
         dataUpdateStructureMapper.updateRemoteData(remoteSql);
         log.info("第" + i + "张表" + tableName + "数据同步成功");
       } catch (Exception e) {
-        log.info("第" + i + "张表" + tableName + "数据同步失败,需要查询该表count值验证");
+        log.info("第" + i + "张表" + tableName + "数据同步出错,需要查询该表count值验证");
       }
     }
     if (tableNames.contains(",")) {
