@@ -171,7 +171,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
       i++;
       try {
         //truncate table命令只能对子表有效。所以如果输入的tableNames中包含总表名称。数据不会被清空
-        if ("1".equals("isTruncate")) {
+        if ("1".equals(isTruncate)) {
           dataUpdateStructureMapper.truncateTable(newDatabaseName, tableName);
         }
         dataUpdateStructureMapper.updateRemoteData(remoteSql);
