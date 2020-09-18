@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ck.dataupdate.mapper.RemoteDataUpdateStructureMapper">
+
+
+  <select id="isDataBase" resultType="java.lang.String">
+    EXISTS ${dataBaseName}.${tableName}
+  </select>
+
+  <update id="dropDataBase">
+    drop database ${dataBaseName}
+  </update>
+
+  <update id="createDataBase">
+    create database ${dataBaseName}
+  </update>
+
+
+  <select id="getRemoteDataBase" resultType="java.lang.String">
+    select name from remote(#{ip},system.databases,#{username},#{password})
+  </select>
+
+  <select id="getRemoteTableNames" resultType="java.lang.String">
+    select name from remote(#{ip},system.tables,#{username},#{password}) where database=#{dataBaseName}
+  </select>
+  <select id="getNotLikeRemoteTableNames" resultType="java.lang.String">
+    SELECT name FROM remote(#{ip},system.tables,#{username},#{password})  WHERE database = #{dataBaseName}
+    and name not like concat('%',#{suffixName})
+  </select>
+
+  <select id="getLikeRemoteTableNames" resultType="java.lang.String">
+    SELECT name FROM remote(#{ip},system.tables,#{username},#{password}) WHERE database = #{dataBaseName}
+    and name  like concat('%',#{suffixName})
+  </select>
+
+  <select id="getSomeFitTableNames" resultType="java.lang.String">
+    SELECT name FROM remote(#{ip},system.tables,#{username},#{password}) WHERE database = #{dataBaseName}
+    and name  in (${tableNames})
+  </select>
+
+  <select id="getRemoteTableStructure" resultType="java.lang.String">
+     select create_table_query from remote(#{ip},system.tables,#{username},#{password})
+     where database=#{dataBaseName} and name=#{tableName}
+  </select>
+
+
+  <update id="createRemoteTableStructure">
+    ${sql}
+  </update>
+
+
+  <insert id="insertData">
+    ${sql}
+  </insert>
+
+  <select id="getMaxNum" resultType="java.lang.String">
+    ${sql}
+  </select>
+
+  <insert id="updateRemoteData">
+    ${sql}
+  </insert>
+
+  <update id="truncateTable">
+    truncate table ${dataBaseName}.${tableName}
+  </update>
+</mapper>

@@ -1,5 +1,6 @@
 package com.ck.dataupdate.utils;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,16 @@ public class CommonUtils {
     String[] split = tableName.split(",");
     String collect = Stream.of(split).collect(Collectors.joining("','", "'", "'"));
     return collect;
+  }
+
+
+  public static boolean isHaving(String name, List<String> list) {
+    for (String sname : list) {
+      if (name.equals(sname)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

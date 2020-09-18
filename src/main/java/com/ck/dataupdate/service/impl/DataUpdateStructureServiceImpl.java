@@ -21,14 +21,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
   @Autowired
   private DataUpdateStructureMapper dataUpdateStructureMapper;
 
-  public boolean isHaving(String name, List<String> list) {
-    for (String sname : list) {
-      if (name.equals(sname)) {
-        return true;
-      }
-    }
-    return false;
-  }
+
 
 
   @Override
@@ -39,7 +32,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     if (getDataBaseList.size() == 0) {
       return "该ck服务器中没有一个库存在";
     } else {
-      boolean a = isHaving(oldDatabaseName, getDataBaseList);
+      boolean a = CommonUtils.isHaving(oldDatabaseName, getDataBaseList);
       if (a == false) {
         return "该ck服务器所有库中尚无源头库";
       }
@@ -148,7 +141,7 @@ public class DataUpdateStructureServiceImpl implements DataUpdateStructureServic
     for (int i = 0; i < tableNameList.size(); i++) {
       if (tableNameList.size() == 1) {
         tableSql = "select count(*) as num from " + database + "." + tableNameList.get(0) + ")";
-        sql += tableSql;
+        sql = tableSql;
         break;
       }
       if (i == tableNameList.size() - 1) {
